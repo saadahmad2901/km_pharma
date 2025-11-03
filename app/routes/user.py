@@ -10,7 +10,7 @@ from app import services
 
 router = APIRouter(prefix="/user", tags=["user"])
 
-@router.post('/register', response_model=APIResponse[schemas.User])
+@router.post('/create', response_model=APIResponse[schemas.User])
 def create_user(user:schemas.UserCreate,db: Session = Depends(get_db)):
     res = services.create_user(user,db)
     if not res:

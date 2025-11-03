@@ -21,7 +21,6 @@ origins = [
     "http://127.0.0.1:3000",  # local frontend
 
     "http://localhost:3000",
-    "https://welnest.vercel.app",  # production frontend
 
    
 ]
@@ -60,7 +59,7 @@ def shutdown_event():
 # Define a root endpoint
 @app.get("/", tags=["Root"])
 async def read_root():
-    return {"message": "Welcome to the WellNest API!"}
+    return {"message": "Welcome to the Km_Pharma API!"}
 
 
 # This is the main entry point for the FastAPI application.
