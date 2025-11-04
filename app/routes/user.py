@@ -8,7 +8,7 @@ from app import models
 from app import schemas
 from app import services
 
-router = APIRouter(prefix="/user", tags=["user"])
+router = APIRouter(prefix="/user", tags=["User"])
 
 @router.post('/create', response_model=APIResponse[schemas.User])
 def create_user(user:schemas.UserCreate,db: Session = Depends(get_db)):
