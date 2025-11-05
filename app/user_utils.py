@@ -64,6 +64,8 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     user = db.query(models.Users).filter(models.Users.email == email).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+    if user.is_active == False:
+        raise HTTPException(status_code=400, detail="Blocked User, contact Admin")
     return user
 
 # --------------------------------------------
