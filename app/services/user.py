@@ -58,7 +58,7 @@ def login(user: schemas.UserLogin, db: Session):
             "fullname": db_user.fullname,
             "email": db_user.email,
             "username": db_user.username,
-            "status": db_user.status,
+            "role": db_user.role,
             "is_active": db_user.is_active
         }
     }
@@ -82,4 +82,17 @@ def send_update_password_mail(email: str, db: Session) -> bool:
 def logout():
     # Placeholder – implement token blacklist if using JWT or session clearing
     pass
+
+def update_user_role_and_active(id,user,db):
+    db_user = db.query(models.Users).filter(models.Users.id == id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="user not found")
+    db_user.role = user.role
+    db_user.is_active = user.is_active
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+
 

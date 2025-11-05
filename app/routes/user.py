@@ -7,6 +7,7 @@ from app.db import get_db
 from app import models
 from app import schemas
 from app import services
+from app.services import update_user_role_and_active
 
 router = APIRouter(prefix="/user", tags=["User"])
 
@@ -43,3 +44,10 @@ def send_update_password_mail(email: str, db: Session = Depends(get_db)):
     if not res:
         raise HTTPException(status_code=404, detail="User not found")
     return APIResponse(data=True, message="Password update email sent successfully")
+
+@router.put("/update-user-active-and-role/{id}", response_model=APIResponse[schemas.User])
+def update_user_active_and_role(id:int,user:schemas.UpdateUserRoleAndactive,db: Session = Depends(get_db)):
+    res = update_user_role_and_active(id,user,db)
+    if not res:
+        raise HTTPException(status_code=404, detail="User not found")
+    return APIResponse(data=res ,message="User updated successfully")

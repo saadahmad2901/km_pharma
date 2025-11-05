@@ -66,3 +66,7 @@ class TokenResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+class UpdateUserRoleAndactive(BaseModel):
+    role: str
+    is_active: bool
