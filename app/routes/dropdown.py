@@ -12,8 +12,21 @@ router = APIRouter(prefix="/dropdowns", tags=["Dropdowns"])
 
 @router.get("/user-roles", response_model=List[DropDownSchema])
 def user_roles_dropdown(db: Session = Depends(get_db)):
-    return utils.get_dropdown_options(db, models.UserRoles, "role", "role")
+    return utils.get_dropdown_options(db, models.UserRoles, "id", "role")
 
 @router.get("/distributers", response_model=List[DropDownSchema])
 def distributers_dropdown(db: Session = Depends(get_db)):
     return utils.get_dropdown_options(db, models.Distributers, "id", "name")
+
+@router.get("/parties", response_model=List[DropDownSchema])
+def parties_dropdown(db: Session = Depends(get_db)):
+    return utils.get_dropdown_options(db, models.Parties, "id", "name")
+
+@router.get("/suppliers", response_model=List[DropDownSchema])
+def suppliers_dropdown(db: Session = Depends(get_db)):
+    return utils.get_dropdown_options(db, models.Supplier, "id", "name")
+
+
+@router.get("/veternary-products", response_model=List[DropDownSchema])
+def veternary_products_dropdown(db: Session = Depends(get_db)):
+    return utils.get_dropdown_options(db, models.VeterinaryProduct, "id", "name")
