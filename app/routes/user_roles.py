@@ -12,13 +12,11 @@ from app.user_utils import get_current_user, require_role
 router = APIRouter(prefix="/user-roles", tags=["User Roles"])
 @router.get('/', response_model=List[schemas.UserRoles])
 def read_user_roles(db: Session = Depends(get_db),
-                    current_user = Depends(get_current_user)
                     ):
     data = services.get_user_roles(db)
     return data
 @router.post('/create', response_model=APIResponse[schemas.UserRoles])
 def create_user_role(role:schemas.UserRolesCreate,db: Session = Depends(get_db),
-                     current_user = Depends(require_role(["Admin"]))
                      ):
     res = services.create_user_role(db,role)
     if not res:
