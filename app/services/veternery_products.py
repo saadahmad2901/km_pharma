@@ -18,6 +18,8 @@ def create_veterinary_product(db: Session, product: schemas.VeterinaryProductCre
     db.commit()
     db.refresh(db_product)
     return db_product
+def get_veterinary_products_by_supplier(db: Session, supplier_id: int) -> List[schemas.VeterinaryProduct]:
+    return db.query(models.VeterinaryProduct).filter(models.VeterinaryProduct.supplier_id == supplier_id).all() 
 
 def update_veterinary_product(db: Session, product_id: int, product: schemas.VeterinaryProductUpdate) -> models.VeterinaryProduct:
     db_product = db.query(models.VeterinaryProduct).filter(models.VeterinaryProduct.id == product_id).first()

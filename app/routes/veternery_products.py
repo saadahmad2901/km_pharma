@@ -21,6 +21,13 @@ def get_veterinary_product(product_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Veterinary Product not found")
     return APIResponse(data=product)
 
+@router.get('/veterinary-product-by-supplier/{supplier_id}', response_model=APIResponse[List[schemas.VeterinaryProduct]])
+def get_veterinary_products_by_supplier(supplier_id: int, db: Session = Depends(get_db)):
+    products = services.get_veterinary_products_by_supplier(db, supplier_id)
+    if not products:
+        return APIResponse(data=[], message="Veterinary Products not found for this supplier")
+    return APIResponse(data=products, message="Veterinary Products fetched successfully")
+
 @router.post('/', response_model=APIResponse[schemas.VeterinaryProduct])
 def create_veterinary_product(product: schemas.VeterinaryProductCreate, db: Session = Depends(get_db)):
     db_supplier = services.get_supplier_by_id(db, product.supplier_id)

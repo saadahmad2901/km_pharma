@@ -1,5 +1,5 @@
 from app.db import Base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String,ForeignKey
 from datetime import datetime
 from sqlalchemy.orm import relationship
 
@@ -8,8 +8,7 @@ class Distributers(Base):
 
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    email = Column(String, nullable=False, unique=True)
+    user_id = Column(ForeignKey('users.id'), nullable=False, unique=True)
     phone = Column(String, nullable=False, unique=True)
     adress = Column(String, nullable=False)
     area = Column(String, nullable=False)
@@ -18,4 +17,7 @@ class Distributers(Base):
 
     # Relationship
     products = relationship("DistributerProducts", back_populates="distributer")
+# Distributers model
+    user = relationship("Users", back_populates="distributers")
+
     

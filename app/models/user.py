@@ -17,3 +17,6 @@ class Users(Base):
     password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
     role = Column(String, default='Admin')
+
+
+    distributers = relationship("Distributers", back_populates="user")

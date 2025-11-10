@@ -9,6 +9,9 @@ from app.schemas.distributers import Distributers
 
 
 router = APIRouter(prefix="/dropdowns", tags=["Dropdowns"])
+@router.get("/users", response_model=List[DropDownSchema])
+def users_dropdown(db: Session = Depends(get_db)):
+    return utils.get_dropdown_options(db, models.Users, "id", "username")
 
 @router.get("/user-roles", response_model=List[DropDownSchema])
 def user_roles_dropdown(db: Session = Depends(get_db)):
