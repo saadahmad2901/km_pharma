@@ -11,6 +11,7 @@ class Parties(Base):
     email = Column(String, nullable=False, unique=True)
     phone = Column(String, nullable=False, unique=True)
     adress = Column(String, nullable=False)
+    distributer_id = Column(Integer, nullable=False)
     created_at = Column(String, default=datetime.utcnow)
     updated_at = Column(String, default=datetime.utcnow, onupdate=datetime.utcnow)
     

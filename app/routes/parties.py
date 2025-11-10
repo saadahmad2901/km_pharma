@@ -7,10 +7,13 @@ from app.db import get_db
 from app import models
 from app import schemas
 from app import services
+from app.user_utils import get_current_user
 
 router = APIRouter(prefix="/parties", tags=["Parties"])
-@router.post('/create', response_model=APIResponse[schemas.Parties])
-def create_party(party:schemas.PartiesCreate,db: Session = Depends(get_db)):
+@router.post('/create', response_model=APIResponse[schemas.Parties]
+             )
+def create_party(party:schemas.PartiesCreate,db: Session = Depends(get_db)
+                 ):
     res = services.create_party(party,db)
     if not res:
         raise HTTPException(status_code=404, detail="Party not found")

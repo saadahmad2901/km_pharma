@@ -9,6 +9,8 @@ def get_party_by_id(db: Session, party_id: int) -> models.Parties:
     return db.query(models.Parties).filter(models.Parties.id == party_id).first()   
 
 def create_party(party: schemas.PartiesCreate, db: Session) -> models.Parties:
+    
+
     db_party = models.Parties(**party.dict())
     db.add(db_party)
     db.commit()

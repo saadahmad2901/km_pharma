@@ -31,3 +31,5 @@ class VeterinaryProduct(Base):
 
     # Relationship
     supplier = relationship("Supplier", back_populates="products")
+    distributer_products = relationship("DistributerProducts", back_populates="product")
+

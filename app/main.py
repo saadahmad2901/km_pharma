@@ -6,7 +6,7 @@ from app.core import custom_exception_handler
 from fastapi.exceptions import RequestValidationError
 from sqlalchemy.exc import IntegrityError
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from app.routes import user_router, dropdown_router, user_roles_router, distributers_router, parties_router, suppliers_router,veternery_products_router
+from app.routes import user_router, dropdown_router, user_roles_router, distributers_router, parties_router, suppliers_router,veternery_products_router, distributer_products_router    
 from fastapi_pagination import add_pagination
 
 # Create the FastAPI app instance
@@ -39,6 +39,7 @@ app.include_router(distributers_router, prefix=settings.API_V1_STR)
 app.include_router(parties_router, prefix=settings.API_V1_STR)
 app.include_router(suppliers_router, prefix=settings.API_V1_STR)
 app.include_router(veternery_products_router, prefix=settings.API_V1_STR)
+app.include_router(distributer_products_router, prefix=settings.API_V1_STR)
 
 
 app.include_router(dropdown_router, prefix=settings.API_V1_STR)

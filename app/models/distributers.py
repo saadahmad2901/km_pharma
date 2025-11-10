@@ -1,6 +1,7 @@
 from app.db import Base
 from sqlalchemy import Column, Integer, String
 from datetime import datetime
+from sqlalchemy.orm import relationship
 
 class Distributers(Base):
     __tablename__ = 'distributers'
@@ -14,4 +15,7 @@ class Distributers(Base):
     area = Column(String, nullable=False)
     created_at = Column(String, default=datetime.utcnow)
     updated_at = Column(String, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationship
+    products = relationship("DistributerProducts", back_populates="distributer")
     
