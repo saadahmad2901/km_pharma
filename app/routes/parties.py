@@ -18,17 +18,20 @@ def create_party(party:schemas.PartiesCreate,db: Session = Depends(get_db)
     if not res:
         raise HTTPException(status_code=404, detail="Party not found")
     return APIResponse(data=res ,message="Party created successfully")
-@router.get('/', response_model=APIResponse[List[schemas.Parties]])
-@router.get('/', response_model=APIResponse[List[schemas.Parties]])
+
+@router.get('/', response_model=APIResponse[List[schemas.PartiesOut]])
 def get_parties(db: Session = Depends(get_db)):
     res = services.get_parties(db)
     return APIResponse(data=res, message="Parties retrieved successfully")
-@router.get('/{party_id}', response_model=APIResponse[schemas.Parties])
+
+@router.get('/{party_id}', response_model=APIResponse[schemas.PartiesOut])
 def get_party_by_id(party_id:int, db: Session = Depends(get_db)):
     res = services.get_party_by_id(db,party_id)
     if not res:
         raise HTTPException(status_code=404, detail="Party not found")
     return APIResponse(data=res ,message="Party fetched successfully")
+
+
 @router.put('/{party_id}', response_model=APIResponse[schemas.Parties])
 def update_party(party_id:int, party:schemas.PartiesUpdate, db: Session = Depends(get_db)):
     res = services.update_party(db,party_id,party)

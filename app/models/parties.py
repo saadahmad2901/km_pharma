@@ -1,6 +1,8 @@
 from app.db import Base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, DateTime, Integer, String
 from datetime import datetime
+from sqlalchemy.sql import func
+
 
 class Parties(Base):
     __tablename__ = 'parties'
@@ -12,6 +14,6 @@ class Parties(Base):
     phone = Column(String, nullable=False, unique=True)
     adress = Column(String, nullable=False)
     distributer_id = Column(Integer, nullable=False)
-    created_at = Column(String, default=datetime.utcnow)
-    updated_at = Column(String, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
