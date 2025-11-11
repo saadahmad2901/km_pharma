@@ -1,6 +1,8 @@
 from typing import Optional
 from pydantic import BaseModel, field_validator
 from datetime import datetime
+from typing import List
+
 
 
 class PartiesBase(BaseModel):
@@ -41,3 +43,12 @@ class PartiesOut(PartiesBase):
 
     class Config:
         orm_mode = True
+
+class DistributerResponse(BaseModel):
+    distributer_id: int
+    distributer_name: Optional[str] = None
+    parties: List[PartiesBase]
+
+    model_config = {
+        "from_attributes": True
+    }

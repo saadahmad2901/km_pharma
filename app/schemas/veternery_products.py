@@ -42,6 +42,10 @@ class VeterinaryProduct(VeterinaryProductBase):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
+class VeterinaryProductResponse(VeterinaryProduct):
+    supplier_name: Optional[str] = None
+
+
     # Automatically fix invalid datetime strings
     @field_validator("created_at", "updated_at", mode="before")
     @classmethod

@@ -8,13 +8,13 @@ from sqlalchemy.orm import Session
 from typing import List
 
 router = APIRouter(prefix="/veterinary-products", tags=["Veterinary Products"])
-@router.get('/', response_model=APIResponse[List[schemas.VeterinaryProduct]])
+@router.get('/', response_model=APIResponse[List[schemas.VeterinaryProductResponse]])
 def get_veterinary_products(db: Session = Depends(get_db)):
     products = services.get_veterinary_products(db)
     print("products", products)
     return APIResponse(success=True, data=products, message="Veterinary Products fetched successfully")
 
-@router.get('/{product_id}', response_model=APIResponse[schemas.VeterinaryProduct])
+@router.get('/{product_id}', response_model=APIResponse[schemas.VeterinaryProductResponse])
 def get_veterinary_product(product_id: int, db: Session = Depends(get_db)):
     product = services.get_veterinary_product_by_id(db, product_id)
     if not product:

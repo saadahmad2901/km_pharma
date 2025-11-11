@@ -15,7 +15,7 @@ def create_distributer_product(
 
 
 def get_distributer_products(db: Session) -> List[schemas.DistributerProducts]:
-    """Return all distributer products with distributer_name and product_name"""
+    """Return all distributer products with distributer_name (from Users.fullname) and product_name"""
     records = (
         db.query(
             models.DistributerProducts.id,
@@ -23,12 +23,16 @@ def get_distributer_products(db: Session) -> List[schemas.DistributerProducts]:
             models.DistributerProducts.product_id,
             models.DistributerProducts.created_at,
             models.DistributerProducts.updated_at,
-            models.Distributers.name.label("distributer_name"),
+            models.Users.fullname.label("distributer_name"),
             models.VeterinaryProduct.name.label("product_name"),
         )
         .join(
             models.Distributers,
             models.DistributerProducts.distributer_id == models.Distributers.id,
+        )
+        .join(
+            models.Users,
+            models.Distributers.user_id == models.Users.id
         )
         .join(
             models.VeterinaryProduct,
@@ -45,7 +49,7 @@ def get_distributer_products(db: Session) -> List[schemas.DistributerProducts]:
             product_id=r.product_id,
             created_at=r.created_at,
             updated_at=r.updated_at,
-            distributer_name=r.distributer_name,
+            distributer_name=r.distributer_name,  # fullname from Users
             product_name=r.product_name,
         )
         for r in records
@@ -55,7 +59,7 @@ def get_distributer_products(db: Session) -> List[schemas.DistributerProducts]:
 def get_distributer_product_by_id(
     db: Session, distributer_product_id: int
 ) -> schemas.DistributerProducts | None:
-    """Return one distributer product with distributer_name and product_name"""
+    """Return one distributer product with distributer_name (from Users.fullname) and product_name"""
     r = (
         db.query(
             models.DistributerProducts.id,
@@ -63,12 +67,16 @@ def get_distributer_product_by_id(
             models.DistributerProducts.product_id,
             models.DistributerProducts.created_at,
             models.DistributerProducts.updated_at,
-            models.Distributers.name.label("distributer_name"),
+            models.Users.fullname.label("distributer_name"),  # fullname from Users
             models.VeterinaryProduct.name.label("product_name"),
         )
         .join(
             models.Distributers,
             models.DistributerProducts.distributer_id == models.Distributers.id,
+        )
+        .join(
+            models.Users,
+            models.Distributers.user_id == models.Users.id
         )
         .join(
             models.VeterinaryProduct,
@@ -90,6 +98,7 @@ def get_distributer_product_by_id(
         distributer_name=r.distributer_name,
         product_name=r.product_name,
     )
+
 def distributer_product_by_distributer_id(
     distributer_id: int, db: Session
 ) -> List[schemas.DistributerProducts]:
@@ -101,7 +110,7 @@ def distributer_product_by_distributer_id(
             models.DistributerProducts.product_id,
             models.DistributerProducts.created_at,
             models.DistributerProducts.updated_at,
-            models.Distributers.name.label("distributer_name"),
+            models.Distributers.user.label("distributer_name"),
             models.VeterinaryProduct.name.label("product_name"),
         )
         .join(

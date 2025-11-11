@@ -31,6 +31,17 @@ def get_party_by_id(party_id:int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Party not found")
     return APIResponse(data=res ,message="Party fetched successfully")
 
+@router.get(
+    '/parties-by-distributer/{distributer_id}',
+    response_model=APIResponse[schemas.DistributerResponse]
+)
+def get_parties_by_distributer_id(distributer_id: int, db: Session = Depends(get_db)):
+    res = services.get_parties_by_distributer_id(db, distributer_id)
+    return APIResponse(
+        success=True,
+        data=res,
+        message="Parties fetched successfully"
+    )
 
 @router.put('/{party_id}', response_model=APIResponse[schemas.Parties])
 def update_party(party_id:int, party:schemas.PartiesUpdate, db: Session = Depends(get_db)):

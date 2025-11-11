@@ -3,14 +3,21 @@ from app import schemas, models
 from typing import List
 
 
-def get_veterinary_products(db: Session) -> List[schemas.VeterinaryProduct]:
+def get_veterinary_products(db: Session) -> List[schemas.VeterinaryProductResponse]:
     res =  db.query(models.VeterinaryProduct).all()
+    for product in res:
+        supplier = db.query(models.Supplier).filter(models.Supplier.id == product.supplier_id).first()
+        product.supplier_name = supplier.name if supplier else None
 
-    print("test", res)
+
     return res
 
-def get_veterinary_product_by_id(db: Session, product_id: int) -> models.VeterinaryProduct:
-    return db.query(models.VeterinaryProduct).filter(models.VeterinaryProduct.id == product_id).first()
+def get_veterinary_product_by_id(db: Session, product_id: int) -> schemas.VeterinaryProductResponse:
+    product = db.query(models.VeterinaryProduct).filter(models.VeterinaryProduct.id == product_id).first()
+    if product:
+        supplier = db.query(models.Supplier).filter(models.Supplier.id == product.supplier_id).first()
+        product.supplier_name = supplier.name if supplier else None
+    return product
 
 def create_veterinary_product(db: Session, product: schemas.VeterinaryProductCreate) -> models.VeterinaryProduct:
     db_product = models.VeterinaryProduct(**product.dict())
