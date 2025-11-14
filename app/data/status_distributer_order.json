@@ -1,0 +1,18 @@
+[
+  {
+    "value": "Ready",
+    "label": "Ready"
+  },
+  {
+    "value": "Arrived",
+    "label": "Arrived"
+  },
+  {
+    "value": "Cancelled",
+    "label": "Cancelled"
+  },
+  {
+    "value": "Received",
+    "label": "Received"
+  }
+]
