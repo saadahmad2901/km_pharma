@@ -90,3 +90,31 @@ def create_order_item_and_make_bill(
         data=db_item,
         message="Order items created and bill generated successfully"
     )
+
+@router.get("/items-bill_by_order_id/{order_id}", response_model=APIResponse[schemas.OrderDetail])
+def get_order_items(
+    order_id: int,
+    db: Session = Depends(get_db),
+):
+    items = services.get_order_items_bill_by_ordder_id(db, order_id=order_id)
+    return APIResponse(
+        success=True,
+        data=items,
+        message="Order items retrieved successfully"
+    )
+@router.put("/items-update/{item_id}", response_model=APIResponse[schemas.updateOrderItem])
+def update_order_item(
+    item_id: int,
+    item: schemas.updateOrderItem,
+    db: Session = Depends(get_db),
+):
+    db_item = services.update_order_item(
+        db, item_id=item_id, item=item
+    )
+    if not db_item:
+        raise HTTPException(status_code=404, detail="Order item not found")
+    return APIResponse(
+        success=True,
+        data=db_item,
+        message="Order item updated successfully"
+    )

@@ -82,5 +82,16 @@ class OrderItemsResponse(OrderItemsBase):
     class Config:
         from_attributes = True  # For ORM compatibility
 
+# =============================
+class OrderDetail(OrdersResponse):
+
+    details: List[OrderItemsResponse] 
+
+class updateOrderItem(BaseModel):
+    quantity: Optional[int] = None
+    unit_price: Optional[int] = None
+    discount: Optional[int] = None
+    paid_status: Optional[str] = None  # cash, credit, etc.
+    paid_amount: Optional[int] = None
 
 

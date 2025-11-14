@@ -231,3 +231,84 @@ def create_order_item_and_make_bill(
 
     return item
 
+
+
+
+def get_order_items_bill_by_ordder_id(
+    db: Session, order_id: int
+) -> schemas.OrderDetail | None:
+
+    order = db.query(models.Orders).filter(models.Orders.id == order_id).first()
+    if not order:
+        return None
+
+    distributer = db.query(models.Distributers).filter(
+        models.Distributers.id == order.distributer_id
+    ).first()
+
+    distributer_name = distributer.user_id and db.query(models.Users).filter(
+        models.Users.id == distributer.user_id
+    ).first().fullname or "Unknown"
+
+    party = db.query(models.Parties).filter(
+        models.Parties.id == order.party_id
+    ).first()
+
+    party_name = party.name if party else "Unknown"
+
+    items = (
+        db.query(models.OrderItems)
+        .filter(models.OrderItems.order_id == order_id)
+        .all()
+    )
+
+    details = []
+    total_order_price = 0
+
+    for item in items:
+        total_price = (item.unit_price * item.quantity) - item.discount
+        total_order_price += total_price
+
+        details.append(
+            schemas.OrderItemsResponse(
+                id=item.id,
+                product_id=item.product_id,
+                quantity=item.quantity,
+                unit_price=item.unit_price,
+                discount=item.discount,
+                paid_status=item.paid_status,
+                paid_amount=item.paid_amount,
+                total_item_price=total_price,
+                created_at=item.created_at,
+                updated_at=item.updated_at,
+            )
+        )
+
+    # ==== FINAL RESPONSE ====
+    return schemas.OrderDetail(
+        id=order.id,
+        distributer_id=order.distributer_id,
+        distributer_name=distributer_name,
+        party_id=order.party_id,
+        party_name=party_name,
+        remarks=order.remarks,
+        created_at=order.created_at,
+        updated_at=order.updated_at,
+        details=details,
+        total_order_price=total_order_price,
+    )
+
+     
+def update_order_item(
+    db: Session, item_id: int, item: schemas.updateOrderItem
+) -> Optional[schemas.updateOrderItem]:
+    db_item = db.query(models.OrderItems).filter(models.OrderItems.id == item_id).first()
+    if not db_item:
+        return None
+
+    for key, value in item.dict(exclude_unset=True).items():
+        setattr(db_item, key, value)
+
+    db.commit()
+    db.refresh(db_item)
+    return item
